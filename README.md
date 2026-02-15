@@ -41,7 +41,7 @@ npm install @leadbox/alphasms-client
 
 ### Basic Example (Node.js)
 
-```js
+```ts
 import { AlphaSmsClient } from 'alphasms-client'
 
 const client = new AlphaSmsClient({
@@ -52,6 +52,25 @@ const balance = await client.balance()
 
 console.log(balance.amount, balance.currency)
 ```
+
+### Send SMS
+
+```ts
+const result = await client.sendSms({
+  id: 100500,
+  phone: 380971234567,
+  sms_signature: 'SMSTest',
+  sms_message: 'Hello from AlphaSMS',
+  sms_lifetime: 172800,
+  short_link: true,
+  unsubscribe_link: true,
+  hook: 'https://example.org/webhook/url.php'
+})
+
+console.log(result.msg_id)
+````
+
+
 
 ---
 
@@ -174,3 +193,8 @@ npm run build
 ## 📜 License
 
 MIT
+
+
+## 📘 Official Documentation
+
+AlphaSMS JSON API: https://docs.alphasms.ua/api/json/

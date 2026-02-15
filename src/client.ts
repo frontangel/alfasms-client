@@ -1,5 +1,12 @@
 import { AlphaSmsError } from './errors.js'
-import type { AlphaSmsEnvelope, AlphaSmsRequestItem, BalanceData } from './types.js'
+import type {
+  AlphaSmsEnvelope,
+  AlphaSmsRequestItem,
+  BalanceData,
+  SendSmsParams,
+  SendSmsResult,
+  SendSmsSuccessData
+} from './types.js';
 
 export type AlphaSmsClientOptions = {
   auth: string
@@ -74,6 +81,56 @@ export class AlphaSmsClient {
     const data = item.data
     if (!data || typeof data.amount !== 'number' || typeof data.currency !== 'string') {
       throw new AlphaSmsError('Unexpected balance data shape', { code: 'BAD_RESPONSE', details: env })
+    }
+
+    return data
+  }
+
+  async sendSms(params: SendSmsParams): Promise<SendSmsResult> {
+    const payload = {
+      type: 'sms',
+      ...params
+    }
+
+    const env = await this.request<SendSmsSuccessData>([payload])
+
+    // top-level success=false
+    if (env.success === false) {
+      throw new AlphaSmsError(env.error ?? 'AlphaSMS access denied', {
+        code: 'API_ERROR',
+        details: env
+      })
+    }
+
+    const item = env.data?.[0]
+
+    if (!item) {
+      throw new AlphaSmsError('Missing sendSms response item', {
+        code: 'BAD_RESPONSE',
+        details: env
+      })
+    }
+
+    // data.success=false (наприклад "Error in Alpha-name")
+    if (item.success === false) {
+      throw new AlphaSmsError(item.error ?? 'AlphaSMS sendSms failed', {
+        code: 'API_ITEM_ERROR',
+        details: item
+      })
+    }
+
+    const data = item.data
+
+    if (
+    !data ||
+    typeof data.id !== 'number' ||
+    typeof data.msg_id !== 'number' ||
+    typeof data.parts !== 'number'
+    ) {
+      throw new AlphaSmsError('Unexpected sendSms response structure', {
+        code: 'BAD_RESPONSE',
+        details: env
+      })
     }
 
     return data
