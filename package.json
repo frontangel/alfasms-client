@@ -40,5 +40,17 @@
   },
   "engines": {
     "node": ">=18"
-  }
+  },
+  "keywords": [
+    "alphasms",
+    "alpha-sms",
+    "sms",
+    "sms-api",
+    "sms-client",
+    "api-client",
+    "nodejs",
+    "nestjs",
+    "typescript",
+    "json-api"
+  ]
 }
