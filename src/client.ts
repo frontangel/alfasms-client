@@ -2,7 +2,7 @@ import { AlphaSmsError } from './errors.js'
 import type {
   AlphaSmsEnvelope,
   AlphaSmsRequestItem,
-  BalanceData,
+  BalanceData, MessageStatusResult,
   SendSmsParams,
   SendSmsResult,
   SendSmsSuccessData
@@ -128,6 +128,42 @@ export class AlphaSmsClient {
     typeof data.parts !== 'number'
     ) {
       throw new AlphaSmsError('Unexpected sendSms response structure', {
+        code: 'BAD_RESPONSE',
+        details: env
+      })
+    }
+
+    return data
+  }
+
+  async getStatus(id: number): Promise<MessageStatusResult> {
+    const env = await this.request<MessageStatusResult>([{ type: 'status', id }])
+
+    if (env.success === false) {
+      throw new AlphaSmsError(env.error ?? 'AlphaSMS access denied', {
+        code: 'API_ERROR',
+        details: env
+      })
+    }
+
+    const item = env.data?.[0]
+    if (!item) {
+      throw new AlphaSmsError('Missing status response item', {
+        code: 'BAD_RESPONSE',
+        details: env
+      })
+    }
+
+    if (item.success === false) {
+      throw new AlphaSmsError(item.error ?? 'AlphaSMS getStatus failed', {
+        code: 'API_ITEM_ERROR',
+        details: item
+      })
+    }
+
+    const data = item.data
+    if (!data || typeof data.id !== 'number' || typeof data.type !== 'string' || typeof data.status !== 'string') {
+      throw new AlphaSmsError('Unexpected status response structure', {
         code: 'BAD_RESPONSE',
         details: env
       })
