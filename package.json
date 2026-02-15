@@ -1,7 +1,7 @@
 {
   "name": "alphasms-client",
-  "version": "0.1.0",
-  "description": "AlphaSMS JSON API client",
+  "version": "0.1.1",
+  "description": "Lightweight TypeScript client for AlphaSMS JSON API with first-class support for Node.js and NestJS backends.",
   "license": "MIT",
   "type": "module",
   "main": "./dist/index.cjs",

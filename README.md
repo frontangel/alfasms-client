@@ -1,5 +1,7 @@
 # AlphaSMS Client
 
+[![npm version](https://img.shields.io/npm/v/alphasms-client.svg)](https://www.npmjs.com/package/alphasms-client)
+
 Lightweight, strongly-typed TypeScript client for the AlphaSMS JSON API.
 
 Designed for Node.js services and NestJS backends.
