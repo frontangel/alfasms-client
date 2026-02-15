@@ -69,8 +69,12 @@ const result = await client.sendSms({
 
 console.log(result.msg_id)
 ````
+### Check message status
 
-
+```ts
+const st = await client.getStatus(100500)
+console.log(st.type, st.status)
+```
 
 ---
 

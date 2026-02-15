@@ -19,7 +19,7 @@ export type BalanceData = {
 
 export type SendSmsParams = {
   id: number
-  phone: number | string
+  phone: number
   sms_signature: string
   sms_message: string
   sms_lifetime?: number
@@ -40,3 +40,12 @@ export type SendSmsErrorData = {
 }
 
 export type SendSmsResult = SendSmsSuccessData
+
+
+export type MessageType = 'sms' | 'viber' | 'rcs'
+
+export type MessageStatusResult = {
+  id: number
+  type: MessageType
+  status: string
+}
