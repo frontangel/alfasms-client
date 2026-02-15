@@ -26,6 +26,14 @@
     "test": "node -e \"console.log('ok')\"",
     "prepublishOnly": "npm run build"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/frontangel/alfasms-client"
+  },
+  "homepage": "https://github.com/frontangel/alfasms-client#readme",
+  "bugs": {
+    "url": "https://github.com/frontangel/alfasms-client/issues"
+  },
   "devDependencies": {
     "tsup": "^8.5.1",
     "typescript": "^5.9.3"

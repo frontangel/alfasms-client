@@ -1,6 +1,10 @@
 # AlphaSMS Client
 
 [![npm version](https://img.shields.io/npm/v/alphasms-client.svg)](https://www.npmjs.com/package/alphasms-client)
+[![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
+[![node](https://img.shields.io/node/v/alphasms-client.svg)](https://www.npmjs.com/package/alphasms-client)
+[![stars](https://img.shields.io/github/stars/frontangel/alfasms-client?style=social)](https://github.com/YOUR_GITHUB_USERNAME/alphasms-client)
+
 
 Lightweight, strongly-typed TypeScript client for the AlphaSMS JSON API.
 
