@@ -2,11 +2,12 @@ import { AlphaSmsError } from './errors.js'
 import type {
   AlphaSmsEnvelope,
   AlphaSmsRequestItem,
-  BalanceData, MessageStatusResult,
+  BalanceData,
+  MessageStatusResult,
   SendSmsParams,
   SendSmsResult,
   SendSmsSuccessData
-} from './types.js';
+} from './types.js'
 
 export type AlphaSmsClientOptions = {
   auth: string
@@ -20,7 +21,10 @@ export class AlphaSmsClient {
   private timeoutMs: number
 
   constructor(opts: AlphaSmsClientOptions) {
-    if (!opts?.auth) throw new AlphaSmsError('AlphaSMS auth key is required', { code: 'CONFIG' })
+    if (!opts?.auth)
+      throw new AlphaSmsError('AlphaSMS auth key is required', {
+        code: 'CONFIG'
+      })
     this.auth = opts.auth
     this.url = opts.baseUrl ?? 'https://alphasms.ua/api/json.php'
     this.timeoutMs = opts.timeoutMs ?? 15_000
@@ -33,7 +37,10 @@ export class AlphaSmsClient {
     try {
       const res = await fetch(this.url, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json'
+        },
         body: JSON.stringify({ auth: this.auth, data: items }),
         signal: controller.signal
       })
@@ -50,18 +57,28 @@ export class AlphaSmsClient {
       }
 
       if (!json || typeof json !== 'object') {
-        throw new AlphaSmsError('Invalid response from AlphaSMS', { code: 'BAD_RESPONSE', details: { text } })
+        throw new AlphaSmsError('Invalid response from AlphaSMS', {
+          code: 'BAD_RESPONSE',
+          details: { text }
+        })
       }
 
       if (json.success === false) {
-        throw new AlphaSmsError(json.error ?? 'AlphaSMS error', { code: 'API_ERROR', details: json })
+        throw new AlphaSmsError(json.error ?? 'AlphaSMS error', {
+          code: 'API_ERROR',
+          details: json
+        })
       }
 
       return json as AlphaSmsEnvelope<T>
     } catch (e: any) {
-      if (e?.name === 'AbortError') throw new AlphaSmsError('AlphaSMS request timeout', { code: 'TIMEOUT' })
+      if (e?.name === 'AbortError')
+        throw new AlphaSmsError('AlphaSMS request timeout', { code: 'TIMEOUT' })
       if (e instanceof AlphaSmsError) throw e
-      throw new AlphaSmsError(e?.message ?? 'Unknown error', { code: 'UNKNOWN', details: e })
+      throw new AlphaSmsError(e?.message ?? 'Unknown error', {
+        code: 'UNKNOWN',
+        details: e
+      })
     } finally {
       clearTimeout(timer)
     }
@@ -72,15 +89,28 @@ export class AlphaSmsClient {
 
     const item = env.data?.[0]
     if (!item) {
-      throw new AlphaSmsError('Missing balance item', { code: 'BAD_RESPONSE', details: env })
+      throw new AlphaSmsError('Missing balance item', {
+        code: 'BAD_RESPONSE',
+        details: env
+      })
     }
     if (item.success === false) {
-      throw new AlphaSmsError(item.error ?? 'AlphaSMS balance failed', { code: 'API_ITEM_ERROR', details: item })
+      throw new AlphaSmsError(item.error ?? 'AlphaSMS balance failed', {
+        code: 'API_ITEM_ERROR',
+        details: item
+      })
     }
 
     const data = item.data
-    if (!data || typeof data.amount !== 'number' || typeof data.currency !== 'string') {
-      throw new AlphaSmsError('Unexpected balance data shape', { code: 'BAD_RESPONSE', details: env })
+    if (
+      !data ||
+      typeof data.amount !== 'number' ||
+      typeof data.currency !== 'string'
+    ) {
+      throw new AlphaSmsError('Unexpected balance data shape', {
+        code: 'BAD_RESPONSE',
+        details: env
+      })
     }
 
     return data
@@ -122,10 +152,10 @@ export class AlphaSmsClient {
     const data = item.data
 
     if (
-    !data ||
-    typeof data.id !== 'number' ||
-    typeof data.msg_id !== 'number' ||
-    typeof data.parts !== 'number'
+      !data ||
+      typeof data.id !== 'number' ||
+      typeof data.msg_id !== 'number' ||
+      typeof data.parts !== 'number'
     ) {
       throw new AlphaSmsError('Unexpected sendSms response structure', {
         code: 'BAD_RESPONSE',
@@ -137,7 +167,9 @@ export class AlphaSmsClient {
   }
 
   async getStatus(id: number): Promise<MessageStatusResult> {
-    const env = await this.request<MessageStatusResult>([{ type: 'status', id }])
+    const env = await this.request<MessageStatusResult>([
+      { type: 'status', id }
+    ])
 
     if (env.success === false) {
       throw new AlphaSmsError(env.error ?? 'AlphaSMS access denied', {
@@ -162,7 +194,13 @@ export class AlphaSmsClient {
     }
 
     const data = item.data
-    if (!data || typeof data.id !== 'number' || typeof data.type !== 'string' || typeof data.status !== 'string') {
+
+    if (
+      !data ||
+      !data.id ||
+      typeof data.type !== 'string' ||
+      typeof data.status !== 'string'
+    ) {
       throw new AlphaSmsError('Unexpected status response structure', {
         code: 'BAD_RESPONSE',
         details: env
@@ -177,6 +215,9 @@ function safeJsonParse(text: string): any {
   try {
     return JSON.parse(text)
   } catch {
-    throw new AlphaSmsError('Invalid JSON response from AlphaSMS', { code: 'BAD_RESPONSE', details: { text } })
+    throw new AlphaSmsError('Invalid JSON response from AlphaSMS', {
+      code: 'BAD_RESPONSE',
+      details: { text }
+    })
   }
 }

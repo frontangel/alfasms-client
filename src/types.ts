@@ -41,11 +41,30 @@ export type SendSmsErrorData = {
 
 export type SendSmsResult = SendSmsSuccessData
 
-
 export type MessageType = 'sms' | 'viber' | 'rcs'
 
+export type MessageStatusType =
+  | 'ACCEPTED'
+  | 'DELETED'
+  | 'DELIVERED'
+  | 'EXPIRED'
+  | 'FILTERED'
+  | 'INVALID DESTINATION ADDRESS'
+  | 'INVALID SOURCE ADDRESS'
+  | 'NO ROUTE'
+  | 'PARTIALLY DELIVERED'
+  | 'QUEUED'
+  | 'READ'
+  | 'REJECTED'
+  | 'REPLIED'
+  | 'ROUTING'
+  | 'SIM FULL'
+  | 'UNDELIVERABLE'
+  | 'UNKNOWN'
+
 export type MessageStatusResult = {
-  id: number
+  id: string
+  msg_id: string
   type: MessageType
-  status: string
+  status: MessageStatusType
 }

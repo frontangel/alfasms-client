@@ -5,7 +5,6 @@
 [![node](https://img.shields.io/node/v/alphasms-client.svg)](https://www.npmjs.com/package/alphasms-client)
 [![stars](https://img.shields.io/github/stars/frontangel/alfasms-client?style=social)](https://github.com/YOUR_GITHUB_USERNAME/alphasms-client)
 
-
 Lightweight, strongly-typed TypeScript client for the AlphaSMS JSON API.
 
 Designed for Node.js services and NestJS backends.
@@ -68,7 +67,8 @@ const result = await client.sendSms({
 })
 
 console.log(result.msg_id)
-````
+```
+
 ### Check message status
 
 ```ts
@@ -128,7 +128,7 @@ export class AlphaSmsService {
 ### new AlphaSmsClient(options)
 
 | Option    | Type   | Required | Default                          |
-|-----------|--------|----------|----------------------------------|
+| --------- | ------ | -------- | -------------------------------- |
 | auth      | string | Yes      | –                                |
 | baseUrl   | string | No       | https://alphasms.ua/api/json.php |
 | timeoutMs | number | No       | 15000                            |
@@ -197,7 +197,6 @@ npm run build
 ## 📜 License
 
 MIT
-
 
 ## 📘 Official Documentation
 

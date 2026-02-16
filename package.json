@@ -23,8 +23,12 @@
   "scripts": {
     "build": "tsup src/index.ts --format esm,cjs --dts --clean",
     "lint": "eslint .",
-    "test": "node -e \"console.log('ok')\"",
-    "prepublishOnly": "npm run build"
+    "lint:fix": "eslint . --fix",
+    "format": "prettier . --write",
+    "format:check": "prettier . --check",
+    "prepublishOnly": "npm run build",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "repository": {
     "type": "git",
@@ -35,8 +39,18 @@
     "url": "https://github.com/frontangel/alfasms-client/issues"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.2",
+    "@types/node": "^25.2.3",
+    "@typescript-eslint/eslint-plugin": "^8.55.0",
+    "@typescript-eslint/parser": "^8.55.0",
+    "dotenv": "^17.3.1",
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.3.0",
+    "prettier": "^3.8.1",
     "tsup": "^8.5.1",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.18"
   },
   "engines": {
     "node": ">=18"
